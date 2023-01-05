@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AddressBooks
 {
-    public class AddressContact
+    public class AddressContacts
     {
         public string FirstName;
         public string LastName;
@@ -17,7 +17,7 @@ namespace AddressBooks
         public string Zip;
         public string PhoneNumber;
         public string Email;
-        public AddressContact(string FirstName, string LastName, string Address, string City, string State, string Zip, string PhoneNumber, string Email)
+        public AddressContacts(string FirstName, string LastName, string Address, string City, string State, string Zip, string PhoneNumber, string Email)
         {
             this.FirstName = FirstName;
             this.LastName = LastName;
