@@ -1,18 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace AddressBookNext
 {
     public class AddressBooks
     {
-
         Dictionary<string, string[]> Page = new Dictionary<string, string[]>();
         List<string> persons = new List<string>();
         Dictionary<string, List<string>> cityPerson = new Dictionary<string, List<string>>();
         Dictionary<string, List<string>> statePerson = new Dictionary<string, List<string>>();
+        Dictionary<string, List<string>> zipPerson = new Dictionary<string, List<string>>();
+        ExternalOperations external;
+
+        public AddressBooks(string FileName)
+        {
+            external= new(FileName, Page);
+        }
 
         public void AddAddress()
         {
@@ -48,57 +56,58 @@ namespace AddressBookNext
             Page.Add(First_Name, Record.Array_of_Details);
 
             Record.Check();
-            if (!cityPerson.Keys.Contains(City.ToLower()))
+
+            SaveInOtherDictionaries(cityPerson, First_Name, City);
+            SaveInOtherDictionaries(statePerson, First_Name, State);
+            SaveInOtherDictionaries(zipPerson, First_Name, Zip_Code);
+        }
+        public void SaveInOtherDictionaries(Dictionary<string, List<string>> dict, string First_Name, string PlaceIdentifier)
+        {
+            if (!dict.Keys.Contains(PlaceIdentifier.ToLower()))
             {
                 persons.Add(First_Name);
-                cityPerson.Add(City.ToLower(), persons);
+                dict.Add(PlaceIdentifier.ToLower(), persons);
                 persons.Clear();
             }
             else
             {
-                cityPerson.TryGetValue(City.ToLower(), out persons);
+                dict.TryGetValue(PlaceIdentifier.ToLower(), out persons);
                 if (!persons.Contains(First_Name))
                     persons.Add(First_Name);
-                cityPerson.Remove(City.ToLower());
-                cityPerson.Add(City.ToLower(), persons);
-                persons.Clear();
-            }
-            if (!statePerson.Keys.Contains(State.ToLower()))
-            {
-                persons.Add(First_Name);
-                statePerson.Add(State.ToLower(), persons);
-                persons.Clear();
-            }
-            else
-            {
-                statePerson.TryGetValue(State.ToLower(), out persons);
-                if (!persons.Contains(First_Name))
-                    persons.Add(First_Name);
-                statePerson.Remove(State.ToLower());
-                statePerson.Add(State.ToLower(), persons);
+                dict.Remove(PlaceIdentifier.ToLower());
+                dict.Add(PlaceIdentifier.ToLower(), persons);
                 persons.Clear();
             }
         }
+
         public bool checkDuplicate(string name) => (Page.ContainsKey(name)) ? true : false;
         public void Edit()
         {
             Console.Write("\nEnter the first name for the contact: ");
             string First_Name = Console.ReadLine();
             if (!Page.ContainsKey(First_Name))
+
                 throw new ArgumentNullException("No such person in the Addressbook");
+
             Page.TryGetValue(First_Name, out string[] Edit_Detail);
+
             Console.Write("Enter a number to edit first name(1), last name(2), address(3), " +
                 "city(4), state(5), zip code(6), \nphone number(7) or email(8): ");
+
             int Index = Convert.ToInt32(Console.ReadLine());
             Console.Write("Enter the new value: ");
+
             Edit_Detail[Index - 1] = Console.ReadLine();
+
             Person Record = new Person(
                 Edit_Detail[0], Edit_Detail[1],
                 Edit_Detail[2], Edit_Detail[3],
                 Edit_Detail[4], Edit_Detail[5],
                 Edit_Detail[6], Edit_Detail[7]);
+
             Page.Remove(First_Name);
             Page.Add(Edit_Detail[0], Edit_Detail);
+
             Record.Check();
         }
         public void Delete()
@@ -106,9 +115,12 @@ namespace AddressBookNext
             Console.Write("\nEnter the first name for the contact: ");
             string First_Name = Console.ReadLine();
             if (!Page.ContainsKey(First_Name))
+
                 throw new ArgumentNullException("No such person in the Addressbook");
+
             Page.TryGetValue(First_Name, out string[] Edit_Detail);
             Page.Remove(First_Name);
+
             Console.WriteLine("Address entry for {0} {1} was removed.", Edit_Detail[0], Edit_Detail[1]);
         }
         public void Display()
@@ -136,7 +148,7 @@ namespace AddressBookNext
                 Edit_Detail[2], Edit_Detail[3],
                 Edit_Detail[4], Edit_Detail[5],
                 Edit_Detail[6], Edit_Detail[7]);
-            Record.Check();
+
         }
         public int search(string name, int cityOrState)
         {
@@ -187,6 +199,21 @@ namespace AddressBookNext
                 persons.Clear();
             }
         }
+
+        public void SortDictionary(Dictionary<string, List<string>> Dict)
+        {
+            List<string> person = new List<string>();
+            persons = new List<string>(Dict.Keys);
+            persons.Sort();
+            foreach (string PlaceIdentifier in persons)
+            {
+                Dict.TryGetValue(PlaceIdentifier, out person);
+                person.Sort();
+                foreach (string name in person)
+                    Display(name);
+            }
+        }
+
         public void SortAlphabatically()
         {
             List<string> keys = new List<string>(Page.Keys);
@@ -194,6 +221,24 @@ namespace AddressBookNext
             foreach (string key in keys)
             {
                 Display(key);
+            }
+        }
+
+        public void SortCityStateZip()
+        {
+            Console.Write("Sort by (City/State/Zip): ");
+            string CSorZ = Console.ReadLine();
+            switch (CSorZ.ToLower())
+            {
+                case "city":
+                    SortDictionary(cityPerson);
+                    break;
+                case "state":
+                    SortDictionary(statePerson);
+                    break;
+                case "zip":
+                    SortDictionary(zipPerson);
+                    break;
             }
         }
         public void Access_to_Addressbook()
@@ -206,6 +251,8 @@ namespace AddressBookNext
                 Console.WriteLine("3 to Delete Contacts");
                 Console.WriteLine("4 to Display Contacts");
                 Console.WriteLine("5 to Sort the address book");
+                Console.WriteLine("6 to Sort the address book by city, state or zip");
+                Console.WriteLine("7 to Manage external .txt file");
                 Console.WriteLine("0 to EXIT");
                 Console.Write("Enter a value: ");
                 Control = Convert.ToInt32(Console.ReadLine());
@@ -249,6 +296,12 @@ namespace AddressBookNext
                     case 5:
                         SortAlphabatically();
                         break;
+                    case 6:
+                        SortCityStateZip();
+                        break;
+                    case 7:
+                        external.TxtHandler();
+                        break;
                     default:
                         Console.WriteLine("Invalid Entry");
                         break;
@@ -258,4 +311,3 @@ namespace AddressBookNext
         }
     }
 }
-
