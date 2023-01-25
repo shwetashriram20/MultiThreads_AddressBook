@@ -1,0 +1,16 @@
+The details for Shweta are:
+Address:----
+City: ----
+State: Maharashtra
+Zip Code: 098
+Phone Number: 25326546
+Email: shwetashriram@gmail.com
+
+
+The details for Random Person are:
+Address: Home
+City: City Name
+State: State Name
+Zip Code: 001
+Phone Number: 6264726
+Email:email@address.com
