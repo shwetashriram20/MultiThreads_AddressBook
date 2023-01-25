@@ -15,7 +15,7 @@ namespace AddressBookNext
         {
             this.FileName = FileName;
             this.Book = Book;
-            Path = @"G:\net\AddressBook\AddressBook\PersonsCont.txt";
+            Path = @"G:\net\AddressBook\AddressBook";
         }
         public bool FileExists(string FilePath)
         {
