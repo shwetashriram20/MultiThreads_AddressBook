@@ -1,6 +1,6 @@
 $ json-server --watch Relatives.json
 
-  \{}/ hi!
+  \{^_^}/ hi!
 
   Loading Relatives.json
   Done
