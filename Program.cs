@@ -1,14 +1,12 @@
-﻿namespace AddressBooks
+﻿using System;
+
+namespace ADO_AddressBook
 {
-    public class Program
+    class Program
     {
-        public static void Main(string[] args)
+        static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to Address Book Program:");
-
-            
+            Console.WriteLine("Address Book ADO!");
         }
-
     }
-
 }
