@@ -1,0 +1,33 @@
+
+	"Contacts": [{
+			"name": "nesh",
+			"lname": "Patil",
+			"address": "Mumbai",
+			"city": "Mumbai",
+			"state": "Mh",
+			"zipCode": "236598",
+			"Phone": "1956325699",
+			"email": "gp@gmail.com"
+		},
+		{
+			"name": "shri",
+			"lname": "Patil",
+			"address": "Dombivli",
+			"city": "Mumbai",
+			"state": "Maharashtra",
+			"zipCode": "236598",
+			"Phone": "9456325699",
+			"email": "dp@gmail.com"
+		},
+		{
+			"name": "iya",
+			"lname": "sawant",
+			"address": "pune",
+			"city": "pune",
+			"state": "maharashtra",
+			"zipCode": "265362",
+			"Phone": "8965326598",
+			"email": "ks@gmail.com"
+		}
+	]
+}
