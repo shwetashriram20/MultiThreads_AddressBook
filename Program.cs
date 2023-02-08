@@ -35,40 +35,40 @@ namespace ADO_AddressBook
                         int count = Convert.ToInt32(Console.ReadLine());
                         for (int i = 0; i < count; i++)
                         {
-
+                            
                             Thread thr = new Thread(new ThreadStart(program.InsertContact));
-                            thr.Start();
+                             thr.Start();
                         }
                         break;
                     case 2:
-                        // program.DisplayAllDetails();
+                       // program.DisplayAllDetails();
                         Thread thr = new Thread(new ThreadStart(program.DisplayAllDetails));
-                        thr.Start();
+                             thr.Start();
                         break;
                     case 3:
-                        // program.UpdateDetails();
-                        Thread thr = new Thread(new ThreadStart(program.UpdateDetails));
-                        thr.Start();
+                       // program.UpdateDetails();
+                         Thread thr = new Thread(new ThreadStart(program.UpdateDetails));
+                             thr.Start();
                         break;
                     case 4:
-                        // program.RemoveContact();
-                        Thread thr = new Thread(new ThreadStart(program.RemoveContact));
-                        thr.Start();
+                       // program.RemoveContact();
+                         Thread thr = new Thread(new ThreadStart(program.RemoveContact));
+                             thr.Start();
                         break;
                     case 5:
                         List<string> Names = program.ContactsByCityOrState();
                         foreach (string name in Names)
                         {
                             contact = program.GetDetailsForAName(name);
-                            // program.DisplayDetails(contact);
-                            Thread thr = new Thread(new ThreadStart(program.DisplayDetails(contact)));
-                            thr.Start();
+                           // program.DisplayDetails(contact);
+                             Thread thr = new Thread(new ThreadStart(program.DisplayDetails(contact)));
+                             thr.Start();
                         }
                         break;
-                    case 6:
+                        case 6:
                         //program.DisplayAllDetails_Period();
-                        Thread thr = new Thread(new ThreadStart(program.DisplayAllDetails_Period));
-                        thr.Start();
+                         Thread thr = new Thread(new ThreadStart(program.DisplayAllDetails_Period));
+                             thr.Start();
                     default:
                         break;
                 }
@@ -147,7 +147,7 @@ namespace ADO_AddressBook
             reader.Close();
 
         }
-        public void DisplayAllDetails_Period()
+         public void DisplayAllDetails_Period()
         {
             SPstr = "dbo.DisplayParticularPeriod_data";
             SqlCommand cmd = new SqlCommand(SPstr, connection);
@@ -256,7 +256,7 @@ namespace ADO_AddressBook
             List<string> FirstNames = new List<string>();
             Console.Write("\nSearch for City or State: ");
             string check = Console.ReadLine();
-            Console.Write("Enter the name of {0}: ", check);
+            Console.Write("Enter the name of {0}: ",check);
             string CityOrStateName = Console.ReadLine();
             int control;
             if (check.ToLower() == "city")
